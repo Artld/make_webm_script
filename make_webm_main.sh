@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE="/path/to/movie or anime episode.mkv"
+FILE="/path/to/movie.mkv"
 SUBS="/path/to/subtitles.ass"
 AUDIO=""
 
@@ -30,4 +30,4 @@ TEMP="/home/user/folder for temporary files and output"
 /usr/bin/mpv --start=$SS --end=$TO "$FILE"
 read -p "Any key to continue or Ctrl+C to exit..." -n1 -s
 
-${BASH_SOURCE%/*}/make_webm_next "$FILE" "$SUBS" "$AUDIO" "$SS" "$TO" "$MAP" "$EXT" "$CV" "$CRF" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$SKIP_PASS_1" "$TEMP"
+${BASH_SOURCE%/*}/make_webm_next.sh "$FILE" "$SUBS" "$AUDIO" "$SS" "$TO" "$MAP" "$EXT" "$CV" "$CRF" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$SKIP_PASS_1" "$TEMP"

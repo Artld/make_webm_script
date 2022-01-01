@@ -1,22 +1,22 @@
-<h2>About</h2>
+## About
 
 For those who are tired to write complicated ffmpeg commands every time creating webm/mp4 video file.
 
-<h2>Usage</h2>
+## Usage
 
-1. Put your configuration in `make_webm_main` file.
+1. Put your configuration in `make_webm_main.sh` file.
 
-2. Run `make_webm_main` in terminal.
+   Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe` and `mpv` (comment out `mpv` if you don't use it).
 
-Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe` and `mpv` (comment out `mpv` if you don't use it).
+   `ffprobe` at the beginning shows info about input file.
 
-`ffprobe` at the beginning shows info about input file.
+   Script adds `-map` for `SUBS` and external `AUDIO` automatically.
 
-Script adds `-map` for `SUBS` and external `AUDIO` automatically.
+   `SKIP_PASS_1` helps when re-encode webm one more time.
 
-`SKIP_PASS_1` helps when re-encode webm one more time.
+2. Run `make_webm_main.sh` in terminal.
 
-<h2>Settings recommendations</h2>
+## Settings recommendations
 
 Below are some ffmpeg speed and quality settings recommended alongside internet.
 
@@ -34,7 +34,7 @@ Recommended quality settings: https://developers.google.com/media/vp9/settings/v
 
 The default CRF is 28, and it should visually correspond to libx264 video at CRF 23, but result in about half the file size.
 
-Available presets (hardcoded in `make_webm_next`): `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium` - default preset, `slow`, `slower`, `veryslow`.
+Available presets (hardcoded in `make_webm_next.sh`): `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium` - default preset, `slow`, `slower`, `veryslow`.
 
 **x264**
 
@@ -43,3 +43,8 @@ The range of the CRF scale is 0–51, where 0 is lossless, 23 is the default, an
 The range is exponential, so increasing the CRF value +6 results in roughly half the bitrate / file size, while -6 leads to roughly twice the bitrate.
 
 Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bit x264. When compiled with 10-bit support, x264's quantizer scale is 0–63. You can see what you are using by referring to the ffmpeg console output during encoding (yuv420p or similar for 8-bit, and yuv420p10le or similar for 10-bit). 8-bit is more common among distributors.
+
+## Changelog
+
+1.0 &nbsp; Stable release.  
+1.0.1 Fix executable file extension dropped.
