@@ -113,3 +113,5 @@ fi
 
 duration=$SECONDS
 echo "$(($duration / 60)) min $(($duration % 60)) sec"
+
+#if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi

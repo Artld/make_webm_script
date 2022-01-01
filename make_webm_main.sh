@@ -15,7 +15,7 @@ EXT="webm"
 # hevc, vp9
 CV="vp9"
 CRF=30
-# libopus, libfdk-aac, copy
+# libopus, libfdk_aac, copy
 CA="copy"
 BA="192K"
 TITLE="Episode title"

@@ -6,19 +6,19 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
 1. Put your configuration in `make_webm_main.sh` file.
 
-   Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe` and `mpv` (comment out `mpv` if you don't use it).
+  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv` and `rm` (comment out `ffprobe` and `mpv` if you don't need them; uncomment `rm` to remove temporary subtitles after).
+   
+  * Put path to video file, run `make_webm_main.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
-   `ffprobe` at the beginning shows info about input file.
+  * Script adds `-map` for `SUBS` and external `AUDIO` automatically.
 
-   Script adds `-map` for `SUBS` and external `AUDIO` automatically.
+  * `SKIP_PASS_1` helps when re-encode webm one more time.
 
-   `SKIP_PASS_1` helps when re-encode webm one more time.
-
-2. Run `make_webm_main.sh` in terminal.
+2. Run `make_webm_main.sh` again.
 
 ## Settings recommendations
 
-Below are some ffmpeg speed and quality settings recommended alongside internet.
+Below are some FFmpeg speed and quality settings recommended alongside internet.
 
 **VP9**
 
@@ -47,4 +47,5 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 ## Changelog
 
 1.0 &nbsp; Stable release.  
-1.0.1 Fix executable file extension dropped.
+1.0.1      Fix executable file extension dropped.  
+1.1 &nbsp; Add option to remove temporary subtitles after processing.
