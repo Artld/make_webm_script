@@ -14,21 +14,16 @@ SUFFIX=[${SUFFIX%.*}]
 #SUFFIX+=" [CRF $CRF]"
 NEW_FILE="$TEMP/$NAME $SUFFIX.$EXT"
 
-if [[ "$CV" == "vp9" ]]; then
-  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25"
-  if [[ "$EXT" == "webm" ]]; then
-    CS="webvtt"
-  elif [[ "$EXT" == "mkv" ]]; then
-    CS="ass"
-  fi
-elif [[ "$CV" == "hevc" ]]; then
-  VIDEO_OPTION="-c:v libx265 -crf $CRF -preset medium -empty_hdlr_name 1"
-  if [[ "$EXT" == "mkv" ]]; then
-    CS="ass"
-  elif [[ "$EXT" == "mp4" ]]; then
-    CS="mov_text"
-  fi
-fi
+case $CV in
+  vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
+  hevc) VIDEO_OPTION="-c:v libx265 -crf $CRF -preset medium -empty_hdlr_name 1";;
+esac
+
+case $EXT in
+  webm) CS="webvtt";;
+  mkv)  CS="ass";;
+  mp4)  CS="mov_text";;
+esac
 
 addMilisec () {
   if [[ "$1" != *.* ]]; then
