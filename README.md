@@ -50,3 +50,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 1.0.1      Fix executable file extension dropped.  
 1.1 &nbsp; Add option to remove temporary subtitles after processing.
 1.1.1      Simplify code.
+1.1.2      Partial fix issue when subtitles does't explicity determined.

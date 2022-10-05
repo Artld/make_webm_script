@@ -66,7 +66,7 @@ if [ -n "$SUBS" ]; then
   else
     ADD_SUBS="-i $NEW_SUBS"
     if [ -n "$AUDIO" ]; then MAP+=" -map 2:0"; else MAP+=" -map 1:0"; fi
-    SUBS_OPTION="-c:s $CS -metadata:s:s:0 language=$SUBS_LANG"
+    SUBS_OPTION="-c:s $CS"
   fi
 fi
 
@@ -100,6 +100,7 @@ fi
   -t "$T" \
   -metadata:s:v:0 language="$VIDEO_LANG" \
   -metadata:s:a:0 language="$AUDIO_LANG" \
+  -metadata:s:s:0 language="$SUBS_LANG" \
   -metadata title="$TITLE" \
   -map_metadata -1 -map_chapters -1 \
   -movflags +faststart \
