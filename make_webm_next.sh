@@ -17,6 +17,7 @@ NEW_FILE="$TEMP/$NAME $SUFFIX.$EXT"
 case $CV in
   vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
   hevc) VIDEO_OPTION="-c:v libx265 -crf $CRF -preset medium -empty_hdlr_name 1";;
+  copy) VIDEO_OPTION="-c:v copy";;
 esac
 
 case $EXT in

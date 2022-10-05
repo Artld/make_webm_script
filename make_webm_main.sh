@@ -12,7 +12,7 @@ TO="00:17:48.600"
 MAP="-map 0:0 -map 0:1"
 # mkv, mp4, webm
 EXT="webm"
-# hevc, vp9
+# hevc, vp9, copy
 CV="vp9"
 CRF=30
 # libopus, libfdk_aac, copy
