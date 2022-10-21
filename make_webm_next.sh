@@ -1,6 +1,6 @@
 #!/bin/bash
 
-variables=(FILE SUBS AUDIO SS TO MAP EXT CV CRF CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB SKIP_PASS_1 TEMP)
+variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB SKIP_PASS_1 TEMP)
 c=0
 for arg; do
   declare "${variables[c++]}"="$arg"
@@ -12,7 +12,7 @@ HOUR=${SS%%:*}
 if [ "$HOUR" -eq 0 ]; then SUFFIX=${SS#*:}; else SUFFIX="$SS"; fi
 SUFFIX=[${SUFFIX%.*}]
 #SUFFIX+=" [CRF $CRF]"
-NEW_FILE="$TEMP/$NAME $SUFFIX.$EXT"
+NEW_FILE="$TEMP/$NAME $SUFFIX.$CONT"
 
 case $CV in
   vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
@@ -20,7 +20,7 @@ case $CV in
   copy) VIDEO_OPTION="-c:v copy";;
 esac
 
-case $EXT in
+case $CONT in
   webm) CS="webvtt";;
   mkv)  CS="ass";;
   mp4)  CS="mov_text";;
@@ -53,20 +53,35 @@ dateDiff (){
 }
 T=$(dateDiff)
 
+MAP="-map 0:0"
+
 if [ -n "$AUDIO" ]; then
-  ADD_AUDIO="-i $AUDIO"
+  MAP+=" -map 0:$AUDIO"
+fi
+
+if [ -n "$AUDIO_FILE" ]; then
+  ADD_AUDIO="-i $AUDIO_FILE"
   MAP+=" -map 1:0"
 fi
 
 if [ -n "$SUBS" ]; then
-  SUBS_EXT="${SUBS##*.}"
-  NEW_SUBS="$TEMP/.cut.$SUBS_EXT"
-  /usr/bin/ffmpeg -ss "$SS" -i "$SUBS" -c $SUBS_EXT -t "$T" -hide_banner -y "$NEW_SUBS"
+  if [ "$HARDSUB" = true ]; then
+    SUBS_OPTION="-vf subtitles='$FILE':stream_index='$SUBS'"
+  else
+    MAP+=" -map 0:$SUBS"
+    SUBS_OPTION="-c:s $CS"
+  fi
+fi
+
+if [ -n "$SUBS_FILE" ]; then
+  SUBS_CONT="${SUBS_FILE##*.}"
+  NEW_SUBS="$TEMP/.cut.$SUBS_CONT"
+  /usr/bin/ffmpeg -ss "$SS" -i "$SUBS_FILE" -c $SUBS_CONT -t "$T" -hide_banner -y "$NEW_SUBS"
   if [ "$HARDSUB" = true ]; then
     SUBS_OPTION="-vf subtitles='$NEW_SUBS':stream_index=0"
   else
     ADD_SUBS="-i $NEW_SUBS"
-    if [ -n "$AUDIO" ]; then MAP+=" -map 2:0"; else MAP+=" -map 1:0"; fi
+    if [ -n "$AUDIO_FILE" ]; then MAP+=" -map 2:0"; else MAP+=" -map 1:0"; fi
     SUBS_OPTION="-c:s $CS"
   fi
 fi

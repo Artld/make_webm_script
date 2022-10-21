@@ -10,7 +10,7 @@ For those who are tired to write complicated ffmpeg commands every time creating
    
   * Put path to video file, run `make_webm_main.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
-  * Script adds `-map` for `SUBS` and external `AUDIO` automatically.
+  * Put id of desired internal streams in `AUDIO` and `SUBS` or live them blank.
 
   * `SKIP_PASS_1` helps when re-encode webm one more time.
 
@@ -52,3 +52,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 1.1.1      Simplify code.
 1.1.2      Partial fix issue when subtitles does't explicity determined.
 1.2 &nbsp; Add `copy` video encoder.
+2.0 &nbsp; Replace `-map` by explicit definition of internal streams.
