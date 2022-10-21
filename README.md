@@ -53,3 +53,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 1.1.2      Partial fix issue when subtitles does't explicity determined.
 1.2 &nbsp; Add `copy` video encoder.
 2.0 &nbsp; Replace `-map` by explicit definition of internal streams.
+2.1 &nbsp; Add `libx264` video encoder.

@@ -12,7 +12,7 @@ TO="00:17:48.600"
 AUDIO="1"; SUBS=""
 # mkv, mp4, webm
 CONT="webm"
-# hevc, vp9, copy
+# vp9, hevc, x264, copy
 CV="vp9"
 CRF=30
 # libopus, libfdk_aac, copy
