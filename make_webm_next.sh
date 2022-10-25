@@ -37,22 +37,26 @@ addMilisec () {
   fi
 }
 date2stamp () {
-    /bin/date --utc --date "$1" +%s
+  /bin/date --utc --date "$1" +%s
 }
 dateDiff (){
-    dte1=$(date2stamp "$SS")
-    dte2=$(date2stamp "$TO")
-    diffSec=$((dte2-dte1))
-    milisec1=$(addMilisec "$SS")
-    milisec2=$(addMilisec "$TO")
-    diffMil=$((milisec2-milisec1))
-    if (( "$diffMil" < 0 )); then
-      diffSec=$((diffSec-1))
-      diffMil=$((10**(${#milisec1})+diffMil))
-    fi
-    echo "$diffSec.$diffMil"
+  if [ "$SS" = "start" ]; then SS="00:00:00.000"; fi
+  dte1=$(date2stamp "$SS")
+  dte2=$(date2stamp "$TO")
+  diffSec=$((dte2-dte1))
+  milisec1=$(addMilisec "$SS")
+  milisec2=$(addMilisec "$TO")
+  diffMil=$((milisec2-milisec1))
+  if (( "$diffMil" < 0 )); then
+    diffSec=$((diffSec-1))
+    diffMil=$((10**(${#milisec1})+diffMil))
+  fi
+  echo "$diffSec.$diffMil"
 }
-T=$(dateDiff)
+
+if [ "$SS" != "start" ]; then SET_SS="-ss $SS"; fi
+
+if [ "$TO" != "end" ]; then SET_T="-t $(dateDiff)"; fi
 
 MAP="-map 0:0"
 
@@ -77,7 +81,7 @@ fi
 if [ -n "$SUBS_FILE" ]; then
   SUBS_CONT="${SUBS_FILE##*.}"
   NEW_SUBS="$TEMP/.cut.$SUBS_CONT"
-  /usr/bin/ffmpeg -ss "$SS" -i "$SUBS_FILE" -c $SUBS_CONT -t "$T" -hide_banner -y "$NEW_SUBS"
+  /usr/bin/ffmpeg $SET_SS -i "$SUBS_FILE" -c $SUBS_CONT $SET_T -hide_banner -y "$NEW_SUBS"
   if [ "$HARDSUB" = true ]; then
     SUBS_OPTION="-vf subtitles='$NEW_SUBS':stream_index=0"
   else
@@ -89,23 +93,23 @@ fi
 
 SECONDS=0
 
-if [[ "$CV" == "vp9" ]]&&[[ "$SKIP_PASS_1" = false ]]; then
+if [[ "$CV" = "vp9" ]]&&[[ "$SKIP_PASS_1" = false ]]; then
   /usr/bin/ffmpeg \
     -analyzeduration 2147483647 -probesize 2147483647 \
-    -ss "$SS" \
+     $SET_SS \
     -i "$FILE" \
     -map 0:0 \
     -pass 1 \
     -c:v libvpx-vp9 -crf "$CRF" -b:v 0 -cpu-used 4 \
     -max_muxing_queue_size 1024 \
     -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25 \
-    -t "$T" \
+     $SET_T \
     -threads 4 -hide_banner -f webm -y /dev/null
 fi
 
 /usr/bin/ffmpeg \
   -analyzeduration 2147483647 -probesize 2147483647 \
-  -ss "$SS" \
+   $SET_SS \
   -i "$FILE" \
    $ADD_AUDIO \
    $ADD_SUBS \
@@ -114,7 +118,7 @@ fi
   -c:a $CA -b:a $BA -ac 2 \
    $SUBS_OPTION \
   -max_muxing_queue_size 1024 \
-  -t "$T" \
+   $SET_T \
   -metadata:s:v:0 language="$VIDEO_LANG" \
   -metadata:s:a:0 language="$AUDIO_LANG" \
   -metadata:s:s:0 language="$SUBS_LANG" \
