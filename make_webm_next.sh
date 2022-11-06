@@ -71,7 +71,9 @@ fi
 
 if [ -n "$SUBS" ]; then
   if [ "$HARDSUB" = true ]; then
-    SUBS_OPTION="-vf subtitles='$FILE':stream_index='$SUBS'"
+    NEW_SUBS="$TEMP/.cut.ass"
+    /usr/bin/ffmpeg $SET_SS -i "$FILE" -map 0:$SUBS -c ass $SET_T -hide_banner -y "$NEW_SUBS"
+    SUBS_OPTION="-vf subtitles='$NEW_SUBS':stream_index=0"
   else
     MAP+=" -map 0:$SUBS"
     SUBS_OPTION="-c:s $CS"
