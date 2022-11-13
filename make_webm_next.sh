@@ -130,6 +130,9 @@ fi
   -fflags +bitexact -flags:v +bitexact -flags:a +bitexact -flags:s +bitexact \
   -threads 4 -hide_banner -y "$NEW_FILE"
 
+SIZE=$((wc -c <"$NEW_FILE"))
+echo "$(($SIZE / 1024 ** 2)).$((($SIZE % (1024 ** 2)) / 100000)) MiB"
+
 duration=$SECONDS
 echo "$(($duration / 60)) min $(($duration % 60)) sec"
 
