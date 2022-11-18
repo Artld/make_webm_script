@@ -6,7 +6,7 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
 1. Put your configuration in `make_webm_main.sh` file.
 
-  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc` if you don't need them; uncomment `rm` to remove temporary subtitles after).
+  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc` if you don't need them; uncomment `rm` to remove temporary audio and subtitles after).
    
   * Put path to video file, run `make_webm_main.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
@@ -54,6 +54,7 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 1.2 &nbsp; Add `copy` video encoder.  
 2.0 &nbsp; Replace `-map` by explicit definition of internal streams.  
 2.1 &nbsp; Add `libx264` video encoder.  
-2.2 &nbsp; Add `start`, `end` aliases for time values.
-2.2.1      Fix reading subtitles from within container.
-2.3 &nbsp; Show output file size using `wc`.
+2.2 &nbsp; Add `start`, `end` aliases for time values.  
+2.2.1      Fix reading subtitles from within container.  
+2.3 &nbsp; Show output file size using `wc`.  
+2.3.1      Fix audio file cutting. Fix file size show.

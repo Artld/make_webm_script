@@ -62,10 +62,13 @@ MAP="-map 0:0"
 
 if [ -n "$AUDIO" ]; then
   MAP+=" -map 0:$AUDIO"
+  AUDIO_OPTION="-c:a $CA -b:a $BA -ac 2"
 fi
 
 if [ -n "$AUDIO_FILE" ]; then
-  ADD_AUDIO="-i $AUDIO_FILE"
+  NEW_AUDIO="$TEMP/.cut.mka"
+  /usr/bin/ffmpeg -i "$AUDIO_FILE" $SET_SS -c:a $CA -b:a $BA -ac 2 $SET_T -hide_banner -y "$NEW_AUDIO"
+  ADD_AUDIO="-i $NEW_AUDIO"
   MAP+=" -map 1:0"
 fi
 
@@ -117,7 +120,7 @@ fi
    $ADD_SUBS \
    $MAP \
    $VIDEO_OPTION \
-  -c:a $CA -b:a $BA -ac 2 \
+   $AUDIO_OPTION \
    $SUBS_OPTION \
   -max_muxing_queue_size 1024 \
    $SET_T \
@@ -130,10 +133,11 @@ fi
   -fflags +bitexact -flags:v +bitexact -flags:a +bitexact -flags:s +bitexact \
   -threads 4 -hide_banner -y "$NEW_FILE"
 
-SIZE=$((wc -c <"$NEW_FILE"))
+SIZE=$(wc -c <"$NEW_FILE")
 echo "$(($SIZE / 1024 ** 2)).$((($SIZE % (1024 ** 2)) / 100000)) MiB"
 
 duration=$SECONDS
 echo "$(($duration / 60)) min $(($duration % 60)) sec"
 
+#if [ -n "$NEW_AUDIO" ]; then /bin/rm "$NEW_AUDIO"; fi
 #if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi
