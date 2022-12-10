@@ -6,7 +6,7 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
 1. Put your configuration in `make_webm_main.sh` file.
 
-  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc` if you don't need them; uncomment `rm` to remove temporary audio and subtitles after).
+  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `date`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc` if you don't need them; uncomment `rm` to remove temporary audio and subtitles after).
    
   * Put path to video file, run `make_webm_main.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
@@ -55,3 +55,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 2.3 &nbsp; Show output file size using `wc`.  
 2.3.1      Fix audio file cutting. Fix file size show.  
 3.0 &nbsp; Add picking of hevc/x264 `PRESET`. Remove rarely used webm option `SKIP_PASS_1`.  
+3.0.1      Simplify code.

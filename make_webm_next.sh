@@ -1,9 +1,9 @@
 #!/bin/bash
 
 variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF PRESET CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
-c=0
+i=0
 for arg; do
-  declare "${variables[c++]}"="$arg"
+  declare "${variables[i++]}"="$arg"
 done
 
 NAME="${FILE##*/}" # remove all from beginning to last /
@@ -40,7 +40,6 @@ date2stamp () {
   /bin/date --utc --date "$1" +%s
 }
 dateDiff (){
-  if [ "$SS" = "start" ]; then SS="00:00:00.000"; fi
   dte1=$(date2stamp "$SS")
   dte2=$(date2stamp "$TO")
   diffSec=$((dte2-dte1))
@@ -54,15 +53,15 @@ dateDiff (){
   echo "$diffSec.$diffMil"
 }
 
-if [ "$SS" != "start" ]; then SET_SS="-ss $SS"; fi
+if [ "$SS" != "start" ]; then SET_SS="-ss $SS"; else SS="00:00:00.000"; fi
 
 if [ "$TO" != "end" ]; then SET_T="-t $(dateDiff)"; fi
 
 MAP="-map 0:0"
 
 if [ -n "$AUDIO" ]; then
-  MAP+=" -map 0:$AUDIO"
   AUDIO_OPTION="-c:a $CA -b:a $BA -ac 2"
+  MAP+=" -map 0:$AUDIO"
 fi
 
 if [ -n "$AUDIO_FILE" ]; then
@@ -78,8 +77,8 @@ if [ -n "$SUBS" ]; then
     /usr/bin/ffmpeg $SET_SS -i "$FILE" -map 0:$SUBS -c ass $SET_T -hide_banner -y "$NEW_SUBS"
     SUBS_OPTION="-vf subtitles='$NEW_SUBS':stream_index=0"
   else
-    MAP+=" -map 0:$SUBS"
     SUBS_OPTION="-c:s $CS"
+    MAP+=" -map 0:$SUBS"
   fi
 fi
 
@@ -90,9 +89,9 @@ if [ -n "$SUBS_FILE" ]; then
   if [ "$HARDSUB" = true ]; then
     SUBS_OPTION="-vf subtitles='$NEW_SUBS':stream_index=0"
   else
+    SUBS_OPTION="-c:s $CS"
     ADD_SUBS="-i $NEW_SUBS"
     if [ -n "$AUDIO_FILE" ]; then MAP+=" -map 2:0"; else MAP+=" -map 1:0"; fi
-    SUBS_OPTION="-c:s $CS"
   fi
 fi
 
@@ -133,7 +132,7 @@ fi
   -fflags +bitexact -flags:v +bitexact -flags:a +bitexact -flags:s +bitexact \
   -threads 4 -hide_banner -y "$NEW_FILE"
 
-SIZE=$(wc -c <"$NEW_FILE")
+SIZE=$(/bin/wc -c <"$NEW_FILE")
 echo "$(($SIZE / 1024 ** 2)).$((($SIZE % (1024 ** 2)) / 100000)) MiB"
 
 duration=$SECONDS
