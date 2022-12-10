@@ -16,6 +16,8 @@ CONT="webm"
 # vp9, hevc, x264, copy
 CV="vp9"
 CRF=30
+# for hevc/x264 only: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow
+PRESET="medium"
 # libopus, libfdk_aac, copy
 CA="libopus"
 BA="192K"
@@ -24,7 +26,6 @@ VIDEO_LANG="jpn"
 AUDIO_LANG="jpn"
 SUBS_LANG="eng"
 HARDSUB=false
-SKIP_PASS_1=false
 TEMP="/home/user/folder for temporary files and output"
 
 # Preview
@@ -33,4 +34,4 @@ if [ "$TO" != "end" ]; then END="--end=$TO"; fi
 /usr/bin/mpv $START $END "$FILE"
 read -p "Any key to continue or Ctrl+C to exit..." -n1 -s
 
-${BASH_SOURCE%/*}/make_webm_next.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$CV" "$CRF" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$SKIP_PASS_1" "$TEMP"
+${BASH_SOURCE%/*}/make_webm_next.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$CV" "$CRF" "$PRESET" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$TEMP"

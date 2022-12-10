@@ -12,8 +12,6 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
   * Put id of desired internal streams in `AUDIO` and `SUBS` or live them blank.
 
-  * `SKIP_PASS_1` helps when re-encode webm one more time.
-
 2. Run `make_webm_main.sh` again.
 
 ## Settings recommendations
@@ -33,8 +31,6 @@ Recommended quality settings: https://developers.google.com/media/vp9/settings/v
 **HEVC**
 
 The default CRF is 28, and it should visually correspond to libx264 video at CRF 23, but result in about half the file size.
-
-Available presets (hardcoded in `make_webm_next.sh`): `ultrafast`, `superfast`, `veryfast`, `faster`, `fast`, `medium` - default preset, `slow`, `slower`, `veryslow`.
 
 **x264**
 
@@ -57,4 +53,5 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 2.2 &nbsp; Add `start`, `end` aliases for time values.  
 2.2.1      Fix reading subtitles from within container.  
 2.3 &nbsp; Show output file size using `wc`.  
-2.3.1      Fix audio file cutting. Fix file size show.
+2.3.1      Fix audio file cutting. Fix file size show.  
+3.0 &nbsp; Add picking of hevc/x264 `PRESET`. Remove rarely used webm option `SKIP_PASS_1`.  

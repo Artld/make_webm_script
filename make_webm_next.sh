@@ -1,6 +1,6 @@
 #!/bin/bash
 
-variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB SKIP_PASS_1 TEMP)
+variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF PRESET CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
 c=0
 for arg; do
   declare "${variables[c++]}"="$arg"
@@ -16,8 +16,8 @@ NEW_FILE="$TEMP/$NAME $SUFFIX.$CONT"
 
 case $CV in
   vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
-  hevc) VIDEO_OPTION="-c:v libx265 -crf $CRF -preset medium -empty_hdlr_name 1";;
-  x264) VIDEO_OPTION="-c:v libx264 -crf $CRF -preset medium -empty_hdlr_name 1";;
+  hevc) VIDEO_OPTION="-c:v libx265 -crf $CRF -preset $PRESET -empty_hdlr_name 1";;
+  x264) VIDEO_OPTION="-c:v libx264 -crf $CRF -preset $PRESET -empty_hdlr_name 1";;
   copy) VIDEO_OPTION="-c:v copy";;
 esac
 
@@ -98,7 +98,7 @@ fi
 
 SECONDS=0
 
-if [[ "$CV" = "vp9" ]]&&[[ "$SKIP_PASS_1" = false ]]; then
+if [ "$CV" = "vp9" ]; then
   /usr/bin/ffmpeg \
     -analyzeduration 2147483647 -probesize 2147483647 \
      $SET_SS \
