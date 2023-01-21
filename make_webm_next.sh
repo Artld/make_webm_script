@@ -1,6 +1,6 @@
 #!/bin/bash
 
-variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF PRESET CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
+variables=(FILE AUDIO_FILE SUBS_FILE AUDIO SUBS SS TO CONT CV CRF ENCODE_SPEED CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
 i=0
 for arg; do
   declare "${variables[i++]}"="$arg"
@@ -15,9 +15,9 @@ SUFFIX=[${SUFFIX%.*}]
 NEW_FILE="$TEMP/$NAME $SUFFIX.$CONT"
 
 case $CV in
-  vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used 2 -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
-  hevc) VIDEO_OPTION="-c:v libx265 -crf $CRF -preset $PRESET -empty_hdlr_name 1";;
-  x264) VIDEO_OPTION="-c:v libx264 -crf $CRF -preset $PRESET -empty_hdlr_name 1";;
+  vp9)  VIDEO_OPTION="-pass 2 -c:v libvpx-vp9 -crf $CRF -b:v 0 -cpu-used $ENCODE_SPEED -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25";;
+  x26*) PRESETS=("veryslow" "slower" "slow" "medium" "fast" "faster" "veryfast" "superfast" "ultrafast")
+        VIDEO_OPTION="-c:v lib$CV -crf $CRF -preset ${PRESETS[$ENCODE_SPEED]} -empty_hdlr_name 1";;
   copy) VIDEO_OPTION="-c:v copy";;
 esac
 
@@ -98,13 +98,15 @@ fi
 SECONDS=0
 
 if [ "$CV" = "vp9" ]; then
+  #ENCODE_SPEED_1=5
+  ENCODE_SPEED_1=$(($ENCODE_SPEED/2+4))
   /usr/bin/ffmpeg \
     -analyzeduration 2147483647 -probesize 2147483647 \
      $SET_SS \
     -i "$FILE" \
     -map 0:0 \
     -pass 1 \
-    -c:v libvpx-vp9 -crf "$CRF" -b:v 0 -cpu-used 4 \
+    -c:v libvpx-vp9 -crf "$CRF" -b:v 0 -cpu-used $ENCODE_SPEED_1 \
     -max_muxing_queue_size 1024 \
     -tile-columns 2 -frame-parallel 0 -auto-alt-ref 1 -lag-in-frames 25 \
      $SET_T \

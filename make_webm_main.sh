@@ -13,11 +13,11 @@ TO="00:17:48.600"
 AUDIO="1"; SUBS=""
 # mkv, mp4, webm
 CONT="webm"
-# vp9, hevc, x264, copy
+# vp9, x264, x265, copy
 CV="vp9"
 CRF=30
-# for hevc/x264 only: ultrafast, superfast, veryfast, faster, fast, medium, slow, slower, veryslow
-PRESET="medium"
+# 0..8
+ENCODE_SPEED="2"
 # libopus, libfdk_aac, copy
 CA="libopus"
 BA="192K"
@@ -34,4 +34,4 @@ if [ "$TO" != "end" ]; then END="--end=$TO"; fi
 /usr/bin/mpv $START $END "$FILE"
 read -p "Any key to continue or Ctrl+C to exit..." -n1 -s
 
-${BASH_SOURCE%/*}/make_webm_next.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$CV" "$CRF" "$PRESET" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$TEMP"
+${BASH_SOURCE%/*}/make_webm_next.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$CV" "$CRF" "$ENCODE_SPEED" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$TEMP"

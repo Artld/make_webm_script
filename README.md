@@ -26,8 +26,6 @@ Recommended quality settings: https://developers.google.com/media/vp9/settings/v
 
 `tile-columns`, `row-mt`: https://stackoverflow.com/questions/41372045/vp9-encoding-limited-to-4-threads
 
-`cpu-used`: Valid range is from 0 to 8, higher numbers indicating greater speed and lower quality. The default value is 1, which will be slow and high quality.
-
 **HEVC**
 
 The default CRF is 28, and it should visually correspond to libx264 video at CRF 23, but result in about half the file size.
@@ -55,4 +53,5 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 2.3 &nbsp; Show output file size using `wc`.  
 2.3.1      Fix audio file cutting. Fix file size show.  
 3.0 &nbsp; Add picking of hevc/x264 `PRESET`. Remove rarely used webm option `SKIP_PASS_1`.  
-3.0.1      Simplify code.
+3.0.1      Simplify code.  
+4.0 &nbsp; Replace `PRESET` and `cpu-used` by common `ENCODE_SPEED` option.  
