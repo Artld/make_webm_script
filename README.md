@@ -4,15 +4,17 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
 ## Usage
 
-1. Put your configuration in `make_webm_main.sh` file.
+1. Put your configuration in `make_webm_launch.sh` file.
 
   * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `date`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc` if you don't need them; uncomment `rm` to remove temporary audio and subtitles after).
-   
-  * Put path to video file, run `make_webm_main.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
-  * Put id of desired internal streams in `AUDIO` and `SUBS` or live them blank.
+  * Put path to video file, run `make_webm_launch.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
-2. Run `make_webm_main.sh` again.
+  * Put id of desired internal streams in `VIDEO`, `AUDIO` and `SUBS` or live some of them blank.
+
+  * `SS` and `TO` are start and final time points. You can also live them blank.
+
+2. Run `make_webm_launch.sh` again.
 
 ## Settings recommendations
 
@@ -55,3 +57,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 3.0 &nbsp; Add picking of hevc/x264 `PRESET`. Remove rarely used webm option `SKIP_PASS_1`.  
 3.0.1      Simplify code.  
 4.0 &nbsp; Replace `PRESET` and `cpu-used` by common `ENCODE_SPEED` option.  
+5.0 &nbsp; Add video `SCALE`. Add picking `VIDEO` stream. Replace `start`, `end` aliases with empty strings. Rename `make_webm_next.sh`->`make_webm.sh`, `make_webm_main.sh`->`make_webm_launch.sh`.  
