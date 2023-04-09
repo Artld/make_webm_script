@@ -1,6 +1,6 @@
 #!/bin/bash
 
-variables=(FILE AUDIO_FILE SUBS_FILE VIDEO AUDIO SUBS SS TO CONT SCALE CV CRF ENCODE_SPEED CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
+variables=(FILE AUDIO_FILE SUBS_FILE VIDEO AUDIO SUBS SS TO CONT SCALE PIX_FMT CV CRF ENCODE_SPEED CA BA TITLE VIDEO_LANG AUDIO_LANG SUBS_LANG HARDSUB TEMP)
 i=0
 for arg; do
   declare "${variables[i++]}"="$arg"
@@ -45,6 +45,15 @@ if [ -n "$SS" ]; then SET_SS="-ss $SS"; else SS="00:00:00.000"; fi
 
 if [ -n "$TO" ]; then SET_T="-t $(dateDiff)"; fi
 
+joinVF () {
+  if [ -n "$VF" ]; then VF+=","; else VF="-vf "; fi
+  VF="${VF}$1"
+}
+
+filterSubs () {
+  echo "subtitles='$1':stream_index=0"
+}
+
 if [ -n "$VIDEO" ]; then
   MAP="-map 0:$VIDEO";
   case $CV in
@@ -53,7 +62,8 @@ if [ -n "$VIDEO" ]; then
           VIDEO_OPTION="-c:v lib$CV -crf $CRF -preset ${PRESETS[$ENCODE_SPEED]} -empty_hdlr_name 1";;
     copy) VIDEO_OPTION="-c:v copy";;
   esac
-  if [ -n "$SCALE" ]; then VF="-vf scale=$SCALE:flags=lanczos"; fi
+  if [ -n "$SCALE" ]; then joinVF "scale=$SCALE:flags=lanczos"; fi
+  if [ -n "$PIX_FMT" ]; then joinVF "format=$PIX_FMT"; fi
 fi
 
 if [ -n "$AUDIO" ]; then
@@ -74,16 +84,11 @@ case $CONT in
   mp4)  CS="mov_text";;
 esac
 
-joinVF () {
-  if [ -n "$VF" ]; then VF+=","; else VF="-vf "; fi
-  echo "${VF}subtitles='$1':stream_index=0"
-}
-
 if [ -n "$SUBS" ]; then
   if [ "$HARDSUB" = true ]; then
     NEW_SUBS="$TEMP/.cut.ass"
     /usr/bin/ffmpeg $SET_SS -i "$FILE" -map 0:$SUBS -c ass $SET_T -hide_banner -y "$NEW_SUBS"
-    VF=$(joinVF "$NEW_SUBS")
+    joinVF $(filterSubs "$NEW_SUBS")
   else
     SUBS_OPTION="-c:s $CS"
     MAP+=" -map 0:$SUBS"
@@ -95,7 +100,7 @@ if [ -n "$SUBS_FILE" ]; then
   NEW_SUBS="$TEMP/.cut.$SUBS_CONT"
   /usr/bin/ffmpeg $SET_SS -i "$SUBS_FILE" -c $SUBS_CONT $SET_T -hide_banner -y "$NEW_SUBS"
   if [ "$HARDSUB" = true ]; then
-    VF=$(joinVF "$NEW_SUBS")
+    joinVF $(filterSubs "$NEW_SUBS")
   else
     SUBS_OPTION="-c:s $CS"
     ADD_SUBS="-i $NEW_SUBS"
@@ -148,5 +153,5 @@ echo "$(($SIZE / 1024 ** 2)).$((($SIZE % (1024 ** 2)) / 100000)) MiB"
 duration=$SECONDS
 echo "$(($duration / 60)) min $(($duration % 60)) sec"
 
-#if [ -n "$NEW_AUDIO" ]; then /bin/rm "$NEW_AUDIO"; fi
-#if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi
+if [ -n "$NEW_AUDIO" ]; then /bin/rm "$NEW_AUDIO"; fi
+if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi

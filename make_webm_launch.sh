@@ -13,7 +13,10 @@ TO="00:17:48.600"
 VIDEO="0"; AUDIO="1"; SUBS=""
 # mkv, mp4, webm
 CONT="webm"
-SCALE="-2:720"
+# -2:720, -2:1080
+SCALE=""
+# yuv420p
+PIX_FMT=""
 # vp9, x264, x265, copy
 CV="vp9"
 CRF=30
@@ -35,4 +38,4 @@ if [ -n "$TO" ]; then END="--end=$TO"; fi
 /usr/bin/mpv $START $END "$FILE"
 read -p "Any key to continue or Ctrl+C to exit..." -n1 -s
 
-${BASH_SOURCE%/*}/make_webm.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$VIDEO" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$SCALE" "$CV" "$CRF" "$ENCODE_SPEED" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$TEMP"
+${BASH_SOURCE%/*}/make_webm.sh "$FILE" "$AUDIO_FILE" "$SUBS_FILE" "$VIDEO" "$AUDIO" "$SUBS" "$SS" "$TO" "$CONT" "$SCALE" "$PIX_FMT" "$CV" "$CRF" "$ENCODE_SPEED" "$CA" "$BA" "$TITLE" "$VIDEO_LANG" "$AUDIO_LANG" "$SUBS_LANG" "$HARDSUB" "$TEMP"
