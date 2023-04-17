@@ -1,6 +1,6 @@
 ## About
 
-For those who are tired to write complicated ffmpeg commands every time creating webm/mp4 video file.
+For those who are tired to write complicated ffmpeg commands every time creating webm/mp4 video file. This script mostly intended to cut, encode, add subs.
 
 ## Usage
 
@@ -91,3 +91,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 4.0 &nbsp; Replace `PRESET` and `cpu-used` by common `ENCODE_SPEED` option.  
 5.0 &nbsp; Add video `SCALE`. Add picking `VIDEO` stream. Replace `start`, `end` aliases with empty strings. Rename `make_webm_next.sh`->`make_webm.sh`, `make_webm_main.sh`->`make_webm_launch.sh`.  
 6.0 &nbsp; Add video `PIX_FMT`. Add variables description in README.  
+6.0.1      Fix timing for external subtitles other then .ass.  

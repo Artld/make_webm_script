@@ -96,9 +96,8 @@ if [ -n "$SUBS" ]; then
 fi
 
 if [ -n "$SUBS_FILE" ]; then
-  SUBS_CONT="${SUBS_FILE##*.}"
-  NEW_SUBS="$TEMP/.cut.$SUBS_CONT"
-  /usr/bin/ffmpeg $SET_SS -i "$SUBS_FILE" -c $SUBS_CONT $SET_T -hide_banner -y "$NEW_SUBS"
+  NEW_SUBS="$TEMP/.cut.ass"
+  /usr/bin/ffmpeg $SET_SS -i "$SUBS_FILE" -c ass $SET_T -hide_banner -y "$NEW_SUBS"
   if [ "$HARDSUB" = true ]; then
     joinVF $(filterSubs "$NEW_SUBS")
   else
@@ -154,4 +153,4 @@ duration=$SECONDS
 echo "$(($duration / 60)) min $(($duration % 60)) sec"
 
 if [ -n "$NEW_AUDIO" ]; then /bin/rm "$NEW_AUDIO"; fi
-if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi
+#if [ -n "$NEW_SUBS" ]; then /bin/rm "$NEW_SUBS"; fi
