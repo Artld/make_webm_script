@@ -6,7 +6,7 @@ For those who are tired to write complicated ffmpeg commands every time creating
 
 1. Put your configuration in `make_webm_launch.sh` file.
 
-  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv`, `date`, `wc` and `rm` (comment out `ffprobe`, `mpv`, `wc`, `rm` if you don't need them).
+  * Ensure you are using right paths for `bash`, `ffmpeg`, `ffprobe`, `mpv` (comment out `ffprobe` and `mpv` if you don't need them).
 
   * Put path to video `FILE`, run `make_webm_launch.sh` in terminal to see `ffprobe` output, then press `Ctrl+C`.
 
@@ -92,3 +92,4 @@ Note: The 0–51 CRF quantizer scale mentioned on this page only applies to 8-bi
 5.0 &nbsp; Add video `SCALE`. Add picking `VIDEO` stream. Replace `start`, `end` aliases with empty strings. Rename `make_webm_next.sh`->`make_webm.sh`, `make_webm_main.sh`->`make_webm_launch.sh`.  
 6.0 &nbsp; Add video `PIX_FMT`. Add variables description in README.  
 6.0.1      Fix timing for external subtitles other then .ass.  
+6.0.2      Refactoring.  
